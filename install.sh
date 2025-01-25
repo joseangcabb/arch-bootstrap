@@ -1,18 +1,20 @@
 #!/bin/bash
 
-bash ./scripts/disk.sh
+bash ./tasks/disk.sh
 
 pacstrap /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 
+mkdir -p /mnt/tmp/tasks
+cp ./tasks/{timezone.sh,locale.sh,hostname.sh,network.sh,users.sh,bootloader.sh} /mnt/tmp/tasks/
+
 arch-chroot /mnt <<EOF
-  pacman -Syu
-  bash /tmp/timezone.sh
-  bash /tmp/locale.sh
-  bash /tmp/hostname.sh
-  bash /tmp/network.sh
-  bash /tmp/users.sh
-  bash /tmp/bootloader.sh
+  pacman -Syu --noconfirm
+  for task in /tmp/tasks/*.sh; do
+    bash "\$task"
+  done
 EOF
+
+rm -r /mnt/tmp/tasks
 
 
