@@ -17,15 +17,17 @@ validate_directory() {
 }
 
 show_loading() {
-  local delay=0.1
-  local spin_chars=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
+  local delay=0.2
+  local spin_chars=('/' '-' '\' '|')
   local i=0
 
+  stty -echo  # Desactiva eco para mejor rendimiento
   while true; do
     printf "\r[%s] Loading %s..." "${spin_chars[i]}" "$1"
     i=$(( (i + 1) % 4 ))
     sleep "$delay"
   done
+  stty echo
 }
 
 stop_loading() {
@@ -36,19 +38,16 @@ stop_loading() {
   kill "$pid" 2>/dev/null
   wait "$pid" 2>/dev/null
 
-  printf "\033[2K\r%s\n" "$result"
+  printf "\r\033[K%s\n" "$result"
 
-  if [[ -n "$output" ]]; then
-    echo -e "\nDetails:"
-    echo "$output"
-  fi
+  [[ -n "$output" ]] && echo -e "\nDetails:\n$output"
 }
 
 execute_with_loading() {
   local command="$1"
   local command_desc="$2"
 
-  show_loading "$command_desc ..." &
+  show_loading "$command_desc" &
   local loading_pid=$!
 
   local output exit_code
@@ -56,8 +55,9 @@ execute_with_loading() {
   exit_code=$?
   
   if [[ $exit_code -eq 0 ]]; then
-    stop_loading "$loading_pid" "\033[0;32m${command_desc} Completed successfully.\033[0m"
+    stop_loading "$loading_pid" "[OK] $command_desc"
   else
-    stop_loading "$loading_pid" "\033[0;31mError occurred during ${command_desc}.\033[0m"
+    stop_loading "$loading_pid" "[ERROR] $command_desc" "$output"
+    return 1
   fi
 }
