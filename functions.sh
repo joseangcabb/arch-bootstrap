@@ -21,13 +21,11 @@ show_loading() {
   local spin_chars=('/' '-' '\' '|')
   local i=0
 
-  stty -echo  # Desactiva eco para mejor rendimiento
   while true; do
-    printf "\r[%s] Loading %s..." "${spin_chars[i]}" "$1"
+    printf "\r[%s] %s..." "${spin_chars[i]}" "$1"
     i=$(( (i + 1) % 4 ))
     sleep "$delay"
   done
-  stty echo
 }
 
 stop_loading() {
