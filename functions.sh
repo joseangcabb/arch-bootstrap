@@ -18,7 +18,7 @@ validate_directory() {
 
 show_loading() {
   local delay=0.1
-  local spin_chars=('|' '/' '-' '\')
+  local spin_chars=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
   local i=0
 
   while true; do
