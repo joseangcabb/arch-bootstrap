@@ -18,5 +18,26 @@ read -p "Size for Swap (default 8G): " swap_size
 swap_size=${swap_size:-8G}
 
 execute_with_loading \
-  "bash ./scripts/disk.sh '$efi_size' '$root_size' '$swap_size'" \
+  "bash $scripts_dir/disk.sh '$efi_size' '$root_size' '$swap_size'" \
   "Disk partition"
+
+# Install base system
+execute_with_loading \
+  "bash $scripts_dir/base_system.sh"
+  "Base system"
+
+# Setup system
+mkdir -p "$chroot_dir"
+for script in "${script_filenames[@]}"; do
+  cp "$scripts_dir/$script" "$chroot_setup_dir/"
+done
+
+arch-chroot /mnt <<EOF
+  pacman -Syu --noconfirm
+
+  for script $chroot_setup_dir/*.sh; do
+    bash ./$script
+  done
+
+  rm -rf $chroot_setup_dir
+EOF

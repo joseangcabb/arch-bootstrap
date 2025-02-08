@@ -14,5 +14,6 @@ script_filenames=(
 )
 
 # Directories
-script_source_dir="./scripts"
-chroot_dir="/mnt/root/setup_scripts"
+scripts_dir="./scripts"
+chroot_setup_dir="/mnt/root/setup_scripts"
+
