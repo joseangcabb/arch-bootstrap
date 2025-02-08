@@ -23,7 +23,7 @@ execute_with_loading \
 
 # Install base system
 execute_with_loading \
-  "bash $scripts_dir/base_system.sh"
+  "bash $scripts_dir/base_system.sh" \
   "Base system"
 
 # Setup system
