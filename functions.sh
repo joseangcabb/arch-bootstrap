@@ -17,28 +17,20 @@ validate_directory() {
 }
 
 show_loading() {
-  local delay=0.2
-  local spin_chars=('/' '-' '\' '|')
-  local i=0
-
+  local msg="$1"
+  local delay=0.1
+  local spinchars='|/-\'
   while true; do
-    printf "\r[%s] %s..." "${spin_chars[i]}" "$1"
-    i=$(( (i + 1) % 4 ))
-    sleep "$delay"
+    for ((i=0; i<${#spinchars}; i++)); do
+      echo -ne "\r${msg} ${spinchars:$i:1}"
+      sleep "$delay"
+    done
   done
 }
 
 stop_loading() {
-  local pid="$1"
-  local result="$2"
-  local output="${3:-}"
-
-  kill "$pid" 2>/dev/null
-  wait "$pid" 2>/dev/null
-
-  printf "\r\033[K%s\n" "$result"
-
-  [[ -n "$output" ]] && echo -e "\nDetails:\n$output"
+  kill "$1" 2>/dev/null
+  echo -e "\r$2"
 }
 
 execute_with_loading() {
@@ -48,14 +40,13 @@ execute_with_loading() {
   show_loading "$command_desc" &
   local loading_pid=$!
 
-  local output exit_code
-  output=$(bash -c "$command" 2>&1)
-  exit_code=$?
-  
+  bash -c "$command"
+  local exit_code=$?
+
   if [[ $exit_code -eq 0 ]]; then
     stop_loading "$loading_pid" "[OK] $command_desc"
   else
-    stop_loading "$loading_pid" "[ERROR] $command_desc" "$output"
+    stop_loading "$loading_pid" "[ERROR] $command_desc"
     return 1
   fi
 }
