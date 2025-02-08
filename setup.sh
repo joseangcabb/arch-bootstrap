@@ -27,17 +27,27 @@ execute_with_loading \
   "Base system"
 
 # Setup system
-mkdir -p "$chroot_dir"
+mkdir -p "/mnt${chroot_setup_dir}"
 for script in "${script_filenames[@]}"; do
-  cp "$scripts_dir/$script" "$chroot_setup_dir/"
+  if [[ -f "$scripts_dir/$script" ]]; then
+    cp -v "$scripts_dir/$script" "/mnt${chroot_setup_dir}/"
+  else
+    echo "Error: Script $script no encontrado!" >&2
+    exit 1
+  fi
 done
 
-arch-chroot /mnt <<EOF
-  pacman -Syu --noconfirm
+arch-chroot /mnt <<'EOF' 
+  set -e
 
-  for script $chroot_setup_dir/*.sh; do
-    bash ./$script
+  pacman -Syu --noconfirm --needed
+
+  for script in "${chroot_setup_dir}"/*.sh; do
+    echo "${script}"
+    bash "${script}"
   done
 
-  rm -rf $chroot_setup_dir
+  if [[ -d "${chroot_setup_dir}" ]]; then
+    rm -rfv "${chroot_setup_dir}"
+  fi
 EOF
