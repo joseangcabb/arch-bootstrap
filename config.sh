@@ -1,19 +1,6 @@
 #!/bin/bash
 
-# Metadata
-script_name="Arch Linux Setup Script"
-script_version="1.0"
+export HOST_SCRIPTS_DIR="$(pwd)/scripts"
+export CHROOT_SCRIPTS_DIR="/root/setup_scripts"
 
-# Script filenames in the desired execution order
-declare -a script_filenames=(
-  "timezone.sh"
-  "locale.sh"
-  "hostname.sh"
-  "users.sh"
-  "bootloader.sh"
-)
-
-# Directories
-scripts_dir="./scripts"
-chroot_setup_dir="/root/setup_scripts"
-
+export USER_SETTINGS="user_settings.conf"
