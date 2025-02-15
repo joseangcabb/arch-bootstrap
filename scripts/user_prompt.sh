@@ -11,8 +11,7 @@ root_size=${root_size:-50G}
 read -p "Size for Swap (default 8G): " swap_size
 swap_size=${swap_size:-8G}
 
-{
-    echo "EFI_SIZE='${efi_size}'"
-    echo "ROOT_SIZE='${root_size}'"
-    echo "SWAP_SIZE='${swap_size}'"
-} > "/tmp/${USER_SETTINGS}"
+echo "EFI_SIZE='${efi_size}'" > "${USER_SETTINGS}"
+echo "ROOT_SIZE='${root_size}'" >> "${USER_SETTINGS}"
+echo "SWAP_SIZE='${swap_size}'" >> "${USER_SETTINGS}"
+

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "${USER_SETTINGS}"
+
 # Check if /mnt is already mounted and unmount if necessary
 if mount | grep -q "/mnt"; then
   umount -R /mnt
@@ -13,9 +15,9 @@ sgdisk --zap-all /dev/sda
 wipefs --all /dev/sda
 
 # Create partitions
-sgdisk /dev/sda --new=1:0:+${efi_size} --typecode=1:ef00 --change-name=1:EF_System
-sgdisk /dev/sda --new=2:0:+${root_size} --typecode=2:8300 --change-name=2:Root_Filesystem
-sgdisk /dev/sda --new=3:0:+${swap_size} --typecode=3:8200 --change-name=3:Swap_Space
+sgdisk /dev/sda --new=1:0:+${EFI_SIZE} --typecode=1:ef00 --change-name=1:EF_System
+sgdisk /dev/sda --new=2:0:+${ROOT_SIZE} --typecode=2:8300 --change-name=2:Root_Filesystem
+sgdisk /dev/sda --new=3:0:+${SWAP_SIZE} --typecode=3:8200 --change-name=3:Swap_Space
 sgdisk /dev/sda --new=4:0: --typecode=4:8300 --change-name=4:Home_Directory
 
 # Synchronize kernel partition table
