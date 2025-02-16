@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "${USER_SETTINGS}"
+source "/tmp/${USER_SETTINGS}"
 
 # Check if /mnt is already mounted and unmount if necessary
 if mount | grep -q "/mnt"; then

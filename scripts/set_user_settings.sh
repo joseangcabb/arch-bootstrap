@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ./config.sh
-
 read -p "Size for EFI (default 500M): " efi_size
 efi_size=${efi_size:-500M}
 
