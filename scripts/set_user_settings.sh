@@ -1,24 +1,26 @@
 #!/bin/bash
 
+echo "============================================"
+echo "  Arch Linux Installation - Configuration"
+echo "============================================"
+echo ""
+
+source ./functions.sh || {
+  echo "Error: Could not load ./functions.sh"
+  exit 1
+}
+
 DEFAULT_EFI_SIZE="500M"
 DEFAULT_ROOT_SIZE="50G"
 DEFAULT_SWAP_SIZE="8G"
+
 DEFAULT_TIMEZONE="America/Lima"
 DEFAULT_LANG="en_US.UTF-8"
 
-read_password() {
-  local prompt=$1 var=$2
-  while true; do
-    read -rsp "${prompt}: " "$var"
-    echo
-    read -rsp "Confirm ${prompt}: " confirm
-    echo
-    if [[ "${!var}" == "$confirm" ]]; then
-      break
-    fi
-    echo "Passwords do not match. Try again."
-  done
-}
+echo "=== Partitions Settings ==="
+echo "Define the size of the partitions."
+echo "Use values like '500M', '50G', etc."
+echo ""
 
 read -rp "Size for EFI [${DEFAULT_EFI_SIZE}]: " efi_size
 efi_size="${efi_size:-${DEFAULT_EFI_SIZE}}"
@@ -29,19 +31,30 @@ root_size="${root_size:-${DEFAULT_ROOT_SIZE}}"
 read -rp "Size for Swap [${DEFAULT_SWAP_SIZE}]: " swap_size
 swap_size="${swap_size:-${DEFAULT_SWAP_SIZE}}"
 
-read_password "Root Password" root_password
+echo "=== Root Password ==="
+echo "Define password for the root user."
+echo ""
+
+read_password "Root Password: " root_password
+
+echo "=== User Authentication ==="
+echo "Define the user name and password."
+echo ""
 
 read -rp "User name: " user_name
-read_password "User Password" user_password
+read_password "User Password: " user_password
+
+echo "=== Localization ==="
+echo "Define the system timezone and language."
+echo ""
 
 read -rp "Timezone [${DEFAULT_TIMEZONE}]: " timezone
 timezone="${timezone:-${DEFAULT_TIMEZONE}}"
 
-read -rp "Lang [${DEFAULT_LANG}]: " lang
+read -rp "Language [${DEFAULT_LANG}]: " lang
 lang="${lang:-${DEFAULT_LANG}}"
 
 {
-    echo "# Auto-generated system configuration"
     echo "EFI_SIZE='${efi_size}'"
     echo "ROOT_SIZE='${root_size}'"
     echo "SWAP_SIZE='${swap_size}'"
@@ -51,3 +64,5 @@ lang="${lang:-${DEFAULT_LANG}}"
     echo "TIMEZONE='${timezone}'"
     echo "LANG='${lang}'"
 } > "/tmp/${USER_SETTINGS}"
+
+echo "Configuration saved successfully!"
