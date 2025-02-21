@@ -1,4 +1,4 @@
 #!/bin/bash
 
-pacman -S networkmanager
+pacman -S networkmanager --noconfirm
 systemctl enable NetworkManager
