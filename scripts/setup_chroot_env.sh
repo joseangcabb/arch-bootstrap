@@ -7,7 +7,7 @@ echo ">>> Copying scripts..."
 # Copy 'setup scripts' and 'install settings' into the chroot environment
 mkdir -p "/mnt${CHROOT_SCRIPTS_DIR}"
 cp -rv "${HOST_SCRIPTS_DIR}/chroot/." "/mnt${CHROOT_SCRIPTS_DIR}"
-cp -v "/tmp/${INSTALL_SETTINGS}" "/mnt${CHROOT_SCRIPTS_DIR}"
+cp -v "/tmp/${INSTALL_SETTINGS_FILE}" "/mnt${CHROOT_SCRIPTS_DIR}"
 
 echo ">>> Installing base system..."
 

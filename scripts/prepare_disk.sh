@@ -4,8 +4,8 @@ echo "==============================="
 echo "=== Prepare disk partitions ==="
 echo "==============================="
 
-source "/tmp/${INSTALL_SETTINGS}"|| {
-  echo "Error: Could not load /tmp/${INSTALL_SETTINGS}"
+source "/tmp/${INSTALL_SETTINGS_FILE}"|| {
+  echo "Error: Could not load /tmp/${INSTALL_SETTINGS_FILE}"
   exit 1
 }
 
