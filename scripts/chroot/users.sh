@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "${CHROOT_SCRIPTS_DIR}/${USER_SETTINGS}"
+source "${CHROOT_SCRIPTS_DIR}/${INSTALL_SETTINGS}"
 
 echo "root:${ROOT_PASSWORD}" | chpasswd
 

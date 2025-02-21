@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source "${CHROOT_SCRIPTS_DIR}/${USER_SETTINGS}"
+source "${CHROOT_SCRIPTS_DIR}/${INSTALL_SETTINGS}"
 
-sed -i "s/^#en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen
+sed -i "s/^#${LANG}/${LANG}/" /etc/locale.gen
 locale-gen
 
-echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "LANG=${LANG}" > /etc/locale.conf
