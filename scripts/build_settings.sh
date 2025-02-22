@@ -3,6 +3,11 @@
 echo "=== Build settings file ==="
 echo ""
 
+source ./functions.sh || {
+  echo "Error: Could not load ./functions.sh"
+  exit 1
+}
+
 # Define default values for partitions
 DEFAULT_EFI_SIZE="500M"
 DEFAULT_ROOT_SIZE="50G"

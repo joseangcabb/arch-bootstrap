@@ -10,11 +10,6 @@ source ./config.sh || {
   exit 1
 }
 
-source ./functions.sh || {
-  echo "Error: Could not load ./functions.sh"
-  exit 1
-}
-
 main() {
   # Build settings file to be used in the installation
   bash "${HOST_SCRIPTS_DIR}/build_settings.sh"
