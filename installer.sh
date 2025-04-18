@@ -15,7 +15,8 @@ echo -e "${YELLOW}ARCH BOOTSTRAP${NC}"
 main() {
   bash "${SCRIPTS}/settings.sh"
   bash "${SCRIPTS}/disk.sh"
-  bash "${SCRIPTS}/generate_installer.sh"
+  bash "${SCRIPTS}/build_installer.sh"
+  bash "${SCRIPTS}/install_base_system.sh"
 
   # Installation within the chroot context 
   arch-chroot /mnt /bin/bash -c "bash ${INSTALLATION_FILE}"
