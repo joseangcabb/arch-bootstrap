@@ -1,4 +1,2 @@
-#!/bin/bash
-
-ln -sf /usr/share/zoneinfo/America/Lima /etc/localtime
+ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 hwclock --systohc

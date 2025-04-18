@@ -1,7 +1,3 @@
-#!/bin/bash
-
-source "${CHROOT_SCRIPTS_DIR}/${INSTALL_SETTINGS_FILE}"
-
 echo "root:${ROOT_PASSWORD}" | chpasswd
 
 useradd -m -G wheel ${USER_NAME}
