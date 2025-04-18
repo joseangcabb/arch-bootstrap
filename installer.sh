@@ -1,40 +1,32 @@
 #!/bin/bash
 
-echo "==============================="
-echo "=== Arch Linux Installation ==="
-echo "==============================="
-echo ""
-
 source ./config.sh || {
   echo "Error: Could not load ./config.sh"
   exit 1
 }
 
+source ./colors.sh || {
+  echo "Error: Could not load ./config.sh"
+  exit 1
+}
+
+echo -e "${YELLOW}ARCH BOOTSTRAP${NC}"
+
 main() {
-  # Build settings file to be used in the installation
-  bash "${HOST_SCRIPTS_DIR}/build_settings.sh"
+  bash "${SCRIPTS}/settings.sh"
+  bash "${SCRIPTS}/disk.sh"
+  bash "${SCRIPTS}/generate_installer.sh"
 
-  # Prepare disk partitions and file systems
-  bash "${HOST_SCRIPTS_DIR}/prepare_disk.sh"
+  # Installation within the chroot context 
+  arch-chroot /mnt /bin/bash -c "bash ${INSTALLATION_FILE}"
 
-  # Copy scripts into the chroot environment
-  bash "${HOST_SCRIPTS_DIR}/setup_chroot_env.sh"
-
-  # Run scripts in chroot context 
-  arch-chroot /mnt /bin/bash -c "bash ${CHROOT_SCRIPTS_DIR}/timezone.sh"
-  arch-chroot /mnt /bin/bash -c "bash ${CHROOT_SCRIPTS_DIR}/locale.sh"
-  arch-chroot /mnt /bin/bash -c "bash ${CHROOT_SCRIPTS_DIR}/hostname.sh"
-  arch-chroot /mnt /bin/bash -c "bash ${CHROOT_SCRIPTS_DIR}/users.sh"
-  arch-chroot /mnt /bin/bash -c "bash ${CHROOT_SCRIPTS_DIR}/bootloader.sh"
-  arch-chroot /mnt /bin/bash -c "bash ${CHROOT_SCRIPTS_DIR}/services.sh"
-
-  # Remove chroot scripts after installation to clean up
-  rm -rf "/mnt/${CHROOT_SCRIPTS_DIR}"
+  # Remove temporary installation files
+  rm "/tmp/${SETTINGS_FILE}"
+  rm "/mnt/${INSTALLATION_FILE}"
 
   # Unmount all partitions before rebooting
   umount -R /mnt
   reboot
-
 }
   
 main

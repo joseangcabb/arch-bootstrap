@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export SCRIPTS="$(pwd)/scripts"
-export CHROOT_FILES="$(pwd)/chroot"
+export MODULES="$(pwd)/modules"
 
 # Temporary files
 export SETTINGS_FILE="tmp_settings.conf"
